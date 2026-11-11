@@ -1,0 +1,74 @@
+{
+  "examId": "sc-2024-autumn-pm",
+  "examName": "令和6年度秋期 情報処理安全確保支援士 午後",
+  "year": "令和6年度（2024年度）",
+  "season": "秋期",
+  "sourcePageUrl": "https://www.ipa.go.jp/shiken/mondai-kaiotu/2024r06.html",
+  "questionPdfUrl": "https://www.ipa.go.jp/shiken/mondai-kaiotu/mondai/2024r06b_sc_pm_qs.pdf",
+  "sections": [
+    {
+      "id": "q2",
+      "title": "問2",
+      "topic": "認証とメールセキュリティ",
+      "items": [
+        {
+          "id": "q2-s1",
+          "label": "設問1",
+          "type": "text",
+          "prompt": "利用者の本人確認に多要素認証を採用する利点を、認証要素の違いに触れて説明してください。",
+          "maxChars": 40
+        },
+        {
+          "id": "q2-s2",
+          "label": "設問2",
+          "type": "multiText",
+          "prompt": "送信ドメイン認証で使うレコードの役割を整理してください。",
+          "fields": ["SPF", "DKIM"],
+          "maxChars": 64
+        },
+        {
+          "id": "q2-s3",
+          "label": "設問3",
+          "type": "choice",
+          "prompt": "受信側で送信ドメイン認証に失敗したメールの扱いを送信ドメイン側が指定する仕組みはどれですか。",
+          "options": [
+            { "value": "ア", "label": "DMARC" },
+            { "value": "イ", "label": "NTP" },
+            { "value": "ウ", "label": "SNMP" },
+            { "value": "エ", "label": "SFTP" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "q3",
+      "title": "問3",
+      "topic": "インシデント対応",
+      "items": [
+        {
+          "id": "q3-s1",
+          "label": "設問1",
+          "type": "trueFalse",
+          "prompt": "インシデント調査では、証拠保全の手順と実施時刻を記録することが重要です。",
+          "options": [
+            { "value": "○", "label": "正しい" },
+            { "value": "×", "label": "誤り" }
+          ]
+        },
+        {
+          "id": "q3-s2",
+          "label": "設問2",
+          "type": "image",
+          "prompt": "構成図やログの関係を図示する欄です。画像を添付するか、後で別途提出する設定にしてください。"
+        },
+        {
+          "id": "q3-s3",
+          "label": "設問3",
+          "type": "text",
+          "prompt": "感染が疑われる端末をネットワークから隔離する目的を説明してください。",
+          "maxChars": 30
+        }
+      ]
+    }
+  ]
+}
