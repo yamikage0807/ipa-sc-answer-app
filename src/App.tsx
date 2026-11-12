@@ -76,7 +76,7 @@ function App() {
   const currentQuestion = questions.find(({ id }) => id === session?.currentQuestionId) ?? questions[0]
   const currentAnswer = currentQuestion ? session?.answers[currentQuestion.id] : undefined
   const summary = useMemo(() => {
-    const statuses = questions.map(({ id, ...question }) => getStatus(question, session?.answers[id]))
+    const statuses = questions.map((question) => getStatus(question, session?.answers[question.id]))
     return {
       total: statuses.length,
       answered: statuses.filter((status) => status === 'answered').length,
@@ -393,9 +393,9 @@ function ReviewPanel({ exam, questions, session, onClose, onJump, onExport, onCo
       <div className="review-header"><div><p className="eyebrow">FINAL CHECK</p><h2 id="review-title">答案の確認</h2></div><button className="icon-button" type="button" aria-label="閉じる" onClick={onClose}>×</button></div>
       <p className="review-intro">{exam.examName} · {session.selectedSections.map((id) => exam.sections.find((section) => section.id === id)?.title).join('、')}</p>
       <div className="summary-strip"><SummaryCell label="回答済み" value={summary.answered} tone="good" /><SummaryCell label="未回答" value={summary.unanswered} tone={summary.unanswered ? 'warn' : ''} /><SummaryCell label="字数超過" value={summary.overLimit} tone={summary.overLimit ? 'danger' : ''} /><SummaryCell label="画像待ち" value={summary.imagePending} tone={summary.imagePending ? 'image' : ''} /></div>
-      {hasIssues && <div className="issue-list"><h3>確認が必要な設問</h3>{questions.filter(({ id, ...question }) => getStatus(question, session.answers[id]) !== 'answered').map(({ id, section, ...question }) => {
-        const status = getStatus(question, session.answers[id])
-        return <button className="issue-row" key={id} type="button" onClick={() => onJump(id)}><span className={`issue-mark status-${status}`}>{status === 'overLimit' ? '!' : status === 'imagePending' ? '▧' : '·'}</span><span><strong>{section.title} · {question.label}</strong><small>{statusLabel(status)}</small></span><span className="row-arrow">→</span></button>
+      {hasIssues && <div className="issue-list"><h3>確認が必要な設問</h3>{questions.filter((question) => getStatus(question, session.answers[question.id]) !== 'answered').map((question) => {
+        const status = getStatus(question, session.answers[question.id])
+        return <button className="issue-row" key={question.id} type="button" onClick={() => onJump(question.id)}><span className={`issue-mark status-${status}`}>{status === 'overLimit' ? '!' : status === 'imagePending' ? '▧' : '·'}</span><span><strong>{question.section.title} · {question.label}</strong><small>{statusLabel(status)}</small></span><span className="row-arrow">→</span></button>
       })}</div>}
       {!hasIssues && <p className="all-clear"><span aria-hidden="true">✓</span>すべての設問に回答しています</p>}
       <div className="export-section"><div><h3>答案を書き出す</h3><p>出力後も端末内の答案は保持されます。</p></div><div className="export-actions"><button className="export-button" type="button" onClick={() => onExport('txt')}><span className="export-icon">TXT</span>TXTを出力</button><button className="export-button" type="button" onClick={() => onExport('json')}><span className="export-icon braces">{ }</span>JSONを出力</button><button className="export-button" type="button" onClick={() => void onCopy()}><span className="export-icon copy-icon">▢</span>コピー</button></div></div>
