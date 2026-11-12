@@ -21,6 +21,7 @@ type Session = {
   selectedSections: string[]
   currentQuestionId: string
   answers: Record<string, Answer>
+  questionSlotCounts?: Record<string, number>
   updatedAt: string
   schemaVersion: number
 }
@@ -31,11 +32,27 @@ type Exam = {
   season: string
   sourcePageUrl: string
   questionPdfUrl: string
+  questionPdfs: { label: string; url: string }[]
+  questionNumbers: number[]
+  answerSlotsPerQuestion: number
   sections: Section[]
 }
 type Status = 'unanswered' | 'answered' | 'overLimit' | 'imagePending' | 'review'
 
-const exam = examData as Exam
+const examCatalog = (examData as Omit<Exam, 'sections'>[]).map((entry): Exam => ({
+  ...entry,
+  sections: entry.questionNumbers.map((number) => ({
+    id: `q${number}`,
+    title: `問${number}`,
+    topic: '公式PDFを参照',
+    items: Array.from({ length: entry.answerSlotsPerQuestion }, (_, index) => ({
+      id: `q${number}-s${index + 1}`,
+      label: `設問${index + 1}`,
+      type: 'text' as const,
+      prompt: '上の問題冊子で設問文を確認し、解答を入力してください。',
+    })),
+  })),
+}))
 const SESSION_KEY = 'ipa-sc-answer-session-v1'
 const sectionNames = (sections: Section[], selected: string[]) => sections.filter((section) => selected.includes(section.id)).map((section) => section.title)
 const allItems = (sections: Section[], selected: string[]) => sections.filter((section) => selected.includes(section.id)).flatMap((section) => section.items.map((item) => ({ ...item, section })))
@@ -67,14 +84,29 @@ function statusLabel(status: Status) {
 
 function App() {
   const [session, setSession] = useState<Session | null>(() => readSession())
+  const [selectedExamId, setSelectedExamId] = useState(() => readSession()?.examId ?? examCatalog[0].examId)
   const [phase, setPhase] = useState<'setup' | 'solve' | 'review'>('setup')
   const [selectedSections, setSelectedSections] = useState<string[]>(['q2', 'q3'])
+  const [selectedPdfIndex, setSelectedPdfIndex] = useState(0)
   const [saveLabel, setSaveLabel] = useState('端末内に自動保存')
   const [notice, setNotice] = useState('')
-  const sections = useMemo(() => exam.sections.filter((section) => selectedSections.includes(section.id)), [selectedSections])
-  const questions = useMemo(() => allItems(exam.sections, session?.selectedSections ?? selectedSections), [session?.selectedSections, selectedSections])
-  const currentQuestion = questions.find(({ id }) => id === session?.currentQuestionId) ?? questions[0]
-  const currentAnswer = currentQuestion ? session?.answers[currentQuestion.id] : undefined
+  const exam = examCatalog.find((entry) => entry.examId === selectedExamId) ?? examCatalog[0]
+  const activePdf = exam.questionPdfs[selectedPdfIndex] ?? exam.questionPdfs[0]
+  const activeSectionIds = session?.examId === exam.examId ? session.selectedSections : selectedSections
+  const sectionDefinitions = useMemo(() => exam.sections.map((section) => {
+    const count = session?.examId === exam.examId ? session.questionSlotCounts?.[section.id] ?? section.items.length : section.items.length
+    return {
+      ...section,
+      items: Array.from({ length: count }, (_, index) => section.items[index] ?? ({
+        id: `${section.id}-s${index + 1}`,
+        label: `設問${index + 1}`,
+        type: 'text' as const,
+        prompt: '上の問題冊子で設問文を確認し、解答を入力してください。',
+      })),
+    }
+  }), [exam, session?.examId, session?.questionSlotCounts])
+  const sections = useMemo(() => sectionDefinitions.filter((section) => activeSectionIds.includes(section.id)), [sectionDefinitions, activeSectionIds])
+  const questions = useMemo(() => allItems(sectionDefinitions, activeSectionIds), [sectionDefinitions, activeSectionIds])
   const summary = useMemo(() => {
     const statuses = questions.map((question) => getStatus(question, session?.answers[question.id]))
     return {
@@ -96,7 +128,7 @@ function App() {
       setSaveLabel(`保存済み ${formatTime(updated.updatedAt)}`)
     }, 650)
     return () => window.clearTimeout(timer)
-  }, [session?.answers, session?.currentQuestionId, session?.selectedSections])
+  }, [session?.answers, session?.currentQuestionId, session?.questionSlotCounts, session?.selectedSections])
 
   useEffect(() => {
     if (!notice) return
@@ -114,6 +146,7 @@ function App() {
       selectedSections,
       currentQuestionId: firstItem.id,
       answers: {},
+      questionSlotCounts: Object.fromEntries(exam.sections.map((section) => [section.id, section.items.length])),
       updatedAt: new Date().toISOString(),
       schemaVersion: 1,
     })
@@ -124,16 +157,22 @@ function App() {
     setSession((current) => current ? { ...current, answers: { ...current.answers, [questionId]: answer } } : current)
   }
 
+  function updateQuestionCount(sectionId: string, value: string) {
+    const count = Math.min(12, Math.max(1, Number(value) || 1))
+    setSession((current) => current ? {
+      ...current,
+      questionSlotCounts: { ...current.questionSlotCounts, [sectionId]: count },
+    } : current)
+  }
+
   function goToQuestion(questionId: string) {
     setSession((current) => current ? { ...current, currentQuestionId: questionId } : current)
     setPhase('solve')
+    window.requestAnimationFrame(() => document.getElementById(questionId)?.scrollIntoView({ behavior: 'smooth', block: 'center' }))
   }
 
-  function moveQuestion(offset: number) {
-    if (!currentQuestion) return
-    const index = questions.findIndex(({ id }) => id === currentQuestion.id)
-    const next = questions[index + offset]
-    if (next) goToQuestion(next.id)
+  function goToSection(sectionId: string) {
+    document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }
 
   async function resetSession() {
@@ -147,7 +186,7 @@ function App() {
 
   function buildExport() {
     const selected = session?.selectedSections ?? selectedSections
-    const items = allItems(exam.sections, selected)
+    const items = allItems(sectionDefinitions, selected)
     return {
       examId: exam.examId,
       examName: exam.examName,
@@ -186,7 +225,7 @@ function App() {
       '※初期設問は操作確認用のオリジナル例題です。',
       '',
     ]
-    for (const { section, ...question } of allItems(exam.sections, session?.selectedSections ?? selectedSections)) {
+    for (const { section, ...question } of allItems(sectionDefinitions, session?.selectedSections ?? selectedSections)) {
       const answer = session?.answers[question.id]
       lines.push(`[${section.title} ${question.label}]`)
       lines.push(`問題: ${question.prompt}`)
@@ -213,7 +252,7 @@ function App() {
     const url = URL.createObjectURL(blob)
     const anchor = document.createElement('a')
     anchor.href = url
-    anchor.download = `2024秋期_SC午後_${(session?.selectedSections ?? selectedSections).map((id) => id.replace('q', '問')).join('')}_答案.${extension}`
+    anchor.download = `${exam.year}${exam.season}_SC午後_${(session?.selectedSections ?? selectedSections).map((id) => id.replace('q', '問')).join('')}_答案.${extension}`
     anchor.click()
     URL.revokeObjectURL(url)
     setNotice(`${extension.toUpperCase()}を出力しました`)
@@ -233,23 +272,22 @@ function App() {
           <div className="welcome-copy">
             <p className="eyebrow">INFORMATION SECURITY SPECIALIST / AFTERNOON</p>
             <h1>考えを、<br /><span>答案のかたちに。</span></h1>
-            <p className="lead">午後試験の解答を設問ごとに整理。入力内容はこの端末に保存され、採点に使える形式で書き出せます。</p>
+            <p className="lead">大問ごとに設問を並べて、流れを止めずに解答。入力内容はこの端末に保存され、採点に使える形式で書き出せます。</p>
             <div className="privacy-note"><span className="privacy-mark" />答案は外部へ送信されません</div>
           </div>
           <section className="setup-panel" aria-labelledby="exam-selection-title">
             <div className="panel-heading">
               <div><p className="eyebrow">SESSION SETUP</p><h2 id="exam-selection-title">試験を選ぶ</h2></div>
-              <span className="year-tag">2024</span>
+              <span className="year-tag">SC / 午後</span>
             </div>
-            <label className="field-label" htmlFor="exam-year">年度</label>
-            <select id="exam-year" value={exam.examId} disabled>
-              <option value={exam.examId}>{exam.year}</option>
+              <label className="field-label" htmlFor="exam-select">試験回</label>
+              <select id="exam-select" value={selectedExamId} onChange={(event) => {
+                setSelectedExamId(event.target.value)
+                setSelectedPdfIndex(0)
+                setSelectedSections(['q2', 'q3'])
+              }}>
+                {examCatalog.map((entry) => <option value={entry.examId} key={entry.examId}>{entry.year} {entry.season}</option>)}
             </select>
-            <span className="field-label">時期</span>
-            <div className="season-switch" role="group" aria-label="試験時期">
-              <button className="season-option" type="button" disabled>春期</button>
-              <button className="season-option active" type="button" aria-pressed="true">秋期</button>
-            </div>
             <span className="field-label">解く問題 <span className="muted">2問選択がおすすめ</span></span>
             <div className="section-picker">
               {exam.sections.map((section) => {
@@ -262,7 +300,7 @@ function App() {
               })}
             </div>
             {selectedSections.length !== 2 && <p className="selection-warning">現在{selectedSections.length}問を選択中です。続行できます。</p>}
-            <p className="sample-warning">初期データは操作確認用のオリジナル例題です。実際の問題文は利用条件を確認して追加してください。</p>
+            <p className="sample-warning">設問欄は入力用です。本文・設問数は公式PDFで確認してください。</p>
             <button className="primary-button start-button" type="button" disabled={!selectedSections.length} onClick={startSession}>{savedMatches && session.selectedSections.join() === selectedSections.join() ? '続きから再開' : '答案をはじめる'}<span aria-hidden="true">→</span></button>
           </section>
         </section>
@@ -271,8 +309,7 @@ function App() {
     )
   }
 
-  if (!session || !currentQuestion) return null
-  const itemIndex = questions.findIndex(({ id }) => id === currentQuestion.id)
+  if (!session) return null
   const progress = Math.round((summary.answered / Math.max(summary.total, 1)) * 100)
 
   return (
@@ -280,21 +317,21 @@ function App() {
       <TopBar saveLabel={saveLabel} onHome={() => setPhase('setup')} />
       <header className="exam-bar">
         <div className="exam-title-block"><span className="exam-kicker">{exam.year} · {exam.season}</span><strong>情報処理安全確保支援士 <span>午後</span></strong></div>
-        <div className="exam-actions"><a className="quiet-button" href={exam.questionPdfUrl} target="_blank" rel="noreferrer">PDFを開く <span aria-hidden="true">↗</span></a><button className="quiet-button" type="button" onClick={() => setPhase('review')}>答案を確認 <span className="count-badge">{summary.unanswered}</span></button></div>
+        <div className="exam-actions"><a className="quiet-button" href={exam.questionPdfUrl} target="_blank" rel="noreferrer">IPA公式ページ <span aria-hidden="true">↗</span></a><button className="quiet-button" type="button" onClick={() => setPhase('review')}>答案を確認 <span className="count-badge">{summary.unanswered}</span></button></div>
       </header>
       <div className="progress-track" aria-label={`回答済み ${summary.answered} / ${summary.total}`}><span style={{ width: `${progress}%` }} /></div>
       <div className="workspace-layout">
         <aside className="question-rail" aria-label="設問一覧">
           <div className="rail-heading"><span>問題一覧</span><span>{summary.answered}/{summary.total}</span></div>
-          {sections.map((section) => <div className="rail-section" key={section.id}>
-            <p>{section.title} <small>{section.topic}</small></p>
-            {section.items.map((question) => {
-              const status = getStatus(question, session.answers[question.id])
-              return <button key={question.id} className={`rail-item ${currentQuestion.id === question.id ? 'current' : ''} status-${status}`} onClick={() => goToQuestion(question.id)} type="button">
-                <span className="status-dot" aria-hidden="true">{status === 'answered' ? '✓' : status === 'overLimit' ? '!' : status === 'imagePending' ? '▧' : ''}</span>{question.label}<span className="rail-state">{statusLabel(status)}</span>
+          {sections.map((section) => {
+            const sectionItems = section.items
+            const answered = sectionItems.filter((question) => getStatus(question, session.answers[question.id]) === 'answered').length
+            return <div className="rail-section" key={section.id}>
+              <button className="rail-item" type="button" onClick={() => goToSection(section.id)}>
+                <span className="rail-major-title">{section.title}</span><span className="rail-state">{answered}/{sectionItems.length}</span>
               </button>
-            })}
-          </div>)}
+            </div>
+          })}
           <button type="button" className="rail-review" onClick={() => setPhase('review')}>最終確認へ <span aria-hidden="true">→</span></button>
         </aside>
         <section className="question-area">
@@ -303,19 +340,34 @@ function App() {
             <span className="save-indicator"><span className="save-dot" />{saveLabel}</span>
           </div>
           <div className="question-heading">
-            <div><p className="eyebrow">{currentQuestion.section.title} / {currentQuestion.section.topic}</p><h1>{currentQuestion.label}</h1></div>
-            <span className="question-index">{String(itemIndex + 1).padStart(2, '0')} <i>/</i> {String(questions.length).padStart(2, '0')}</span>
+            <div><p className="eyebrow">午後試験 / 大問ごとに入力</p><h1>答案をまとめて書く</h1></div>
+            <span className="question-index">{summary.answered} <i>/</i> {summary.total}</span>
           </div>
-          <article className="question-card">
-            <div className="question-copy"><span className="prompt-label">QUESTION</span><p>{currentQuestion.prompt}</p></div>
-            {currentQuestion.maxChars && <p className="limit-note">字数制限 <strong>{currentQuestion.maxChars}字以内</strong></p>}
-            <AnswerControl question={currentQuestion} answer={currentAnswer} onChange={(answer) => updateAnswer(currentQuestion.id, answer)} onNotice={setNotice} />
-          </article>
-          <div className="question-navigation">
-            <button type="button" className="nav-button previous" onClick={() => moveQuestion(-1)} disabled={itemIndex === 0}><span aria-hidden="true">←</span> 前の設問</button>
-            <span>{itemIndex + 1} / {questions.length}</span>
-            {itemIndex === questions.length - 1 ? <button type="button" className="primary-button nav-next" onClick={() => setPhase('review')}>答案を確認 <span aria-hidden="true">→</span></button> : <button type="button" className="primary-button nav-next" onClick={() => moveQuestion(1)}>次の設問 <span aria-hidden="true">→</span></button>}
+          <details className="pdf-viewer" open>
+            <summary><span>公式問題冊子</span><span className="pdf-summary-note">ページ内で表示・折りたたみ</span></summary>
+            <div className="pdf-toolbar">
+              {exam.questionPdfs.length > 1 && <div className="pdf-tabs" role="group" aria-label="問題冊子の選択">
+                {exam.questionPdfs.map((pdf, index) => <button className={selectedPdfIndex === index ? 'active' : ''} type="button" aria-pressed={selectedPdfIndex === index} key={pdf.url} onClick={() => setSelectedPdfIndex(index)}>{pdf.label}</button>)}
+              </div>}
+              <a href={activePdf.url} target="_blank" rel="noreferrer">別タブで開く ↗</a>
+            </div>
+            <iframe className="pdf-frame" title={`${exam.examName} ${activePdf.label}`} src={activePdf.url} loading="lazy" />
+          </details>
+          <div className="grouped-questions">
+            {sections.map((section) => <section className="major-question" id={section.id} key={section.id}>
+              <header className="major-heading"><div><p className="eyebrow">{exam.year} {exam.season} / SC 午後</p><h2>{section.title}</h2></div><div className="major-tools"><label>設問欄数<select aria-label={`${section.title}の設問欄数`} value={section.items.length} onChange={(event) => updateQuestionCount(section.id, event.target.value)}>{Array.from({ length: 12 }, (_, index) => <option value={index + 1} key={index + 1}>{index + 1}</option>)}</select></label><a href={activePdf.url} target="_blank" rel="noreferrer">問題PDF ↗</a></div></header>
+              {section.items.map((question) => {
+                const answer = session.answers[question.id]
+                const status = getStatus(question, answer)
+                return <article className="question-card subquestion-card" id={question.id} key={question.id}>
+                  <div className="subquestion-heading"><h3>{question.label}</h3><span className={`subquestion-status status-${status}`}>{statusLabel(status)}</span></div>
+                  <div className="question-copy"><span className="prompt-label">PDFを参照</span><p>{question.prompt}</p></div>
+                  <AnswerControl question={question} answer={answer} onChange={(next) => updateAnswer(question.id, next)} onNotice={setNotice} />
+                </article>
+              })}
+            </section>)}
           </div>
+          <div className="question-navigation"><span>{summary.answered} / {summary.total} 回答済み</span><button type="button" className="primary-button nav-next" onClick={() => setPhase('review')}>答案を確認 <span aria-hidden="true">→</span></button></div>
         </section>
       </div>
       {phase === 'review' && <ReviewPanel exam={exam} questions={questions} session={session} onClose={() => setPhase('solve')} onJump={goToQuestion} onExport={downloadFile} onCopy={copyText} onReset={resetSession} summary={summary} />}
