@@ -1,0 +1,1818 @@
+{
+  "schema_version": "1.0",
+  "document": "SC実力診断テスト 午後問題 模範解答（実装用）",
+  "source_question_file": "実力診断問題.pdf",
+  "source_answer_file": "実力問題解答.pdf",
+  "source_answer_url": "https://avanade-my.sharepoint.com/personal/megumi_yajima_avanade_com/Documents/Microsoft%20Copilot%20Chat%20Files/%E5%AE%9F%E5%8A%9B%E5%95%8F%E9%A1%8C%E8%A7%A3%E7%AD%94.pdf",
+  "question_count": 45,
+  "answer_component_count": 68,
+  "notes": [
+    "設問IDはSC実力診断問題_実装用.jsonと一致する。",
+    "answer_valuesは入力欄単位。checkbox形式のみ、1入力欄に複数の正解選択肢を持つ。",
+    "order_matters=falseは模範解答に順不同と明記された設問。",
+    "記述式答案の自動採点では、完全一致ではなくキーワード・意味一致による判定を推奨する。"
+  ],
+  "model_answers": [
+    {
+      "id": "A-Q1-1",
+      "display_answer": "見積書テーブルの会員IDと一致する会員IDの会員情報を抽出する。",
+      "answer_values": [
+        {
+          "label": "回答",
+          "value": "見積書テーブルの会員IDと一致する会員IDの会員情報を抽出する。"
+        }
+      ],
+      "order_matters": true,
+      "all_required": false,
+      "source_answer_pdf_page": 1,
+      "note": "",
+      "set_id": "A",
+      "question_no": 1,
+      "subquestion_no": 1,
+      "topic": "見積書の表示処理における脆弱性の検出",
+      "prompt": "本文中の下線①について、会員テーブルを参照するSQL文の処理内容を40字以内で答えよ。",
+      "response_format": "記述式",
+      "ui_widget": "textarea",
+      "max_chars": 40,
+      "exact_chars": null,
+      "answer_field_count": 1,
+      "item_char_limits": [],
+      "blank_ids": [],
+      "option_set_id": null
+    },
+    {
+      "id": "A-Q1-2",
+      "display_answer": "a：見積書テーブル / b：セッションオブジェクト",
+      "answer_values": [
+        {
+          "label": "a",
+          "value": "見積書テーブル"
+        },
+        {
+          "label": "b",
+          "value": "セッションオブジェクト"
+        }
+      ],
+      "order_matters": false,
+      "all_required": false,
+      "source_answer_pdf_page": 1,
+      "note": "a、bは順不同",
+      "set_id": "A",
+      "question_no": 1,
+      "subquestion_no": 2,
+      "topic": "見積書の表示処理における脆弱性の検出",
+      "prompt": "本文中の［a］、［b］に入れる適切な字句を答えよ。",
+      "response_format": "穴埋め記述",
+      "ui_widget": "multi_text",
+      "max_chars": null,
+      "exact_chars": null,
+      "answer_field_count": 2,
+      "item_char_limits": [],
+      "blank_ids": [
+        "a",
+        "b"
+      ],
+      "option_set_id": null
+    },
+    {
+      "id": "A-Q2-1",
+      "display_answer": "ア、イ、エ",
+      "answer_values": [
+        {
+          "label": "選択肢",
+          "value": "ア"
+        },
+        {
+          "label": "選択肢",
+          "value": "イ"
+        },
+        {
+          "label": "選択肢",
+          "value": "エ"
+        }
+      ],
+      "order_matters": false,
+      "all_required": true,
+      "source_answer_pdf_page": 1,
+      "note": "3項目完答",
+      "set_id": "A",
+      "question_no": 2,
+      "subquestion_no": 1,
+      "topic": "よくある質問の検索処理における脆弱性の検出",
+      "prompt": "本文中の下線②について、SQLインジェクション脆弱性を検出できるパラメータの値を解答群の中から全て選び、記号で答えよ。",
+      "response_format": "選択式（複数選択）",
+      "ui_widget": "checkbox",
+      "max_chars": null,
+      "exact_chars": null,
+      "answer_field_count": 1,
+      "item_char_limits": [],
+      "blank_ids": [],
+      "option_set_id": "OPT-A-Q2-1"
+    },
+    {
+      "id": "A-Q2-2",
+      "display_answer": "パラメータ中の特殊文字を用いてSQL文を組み立てているから。",
+      "answer_values": [
+        {
+          "label": "回答",
+          "value": "パラメータ中の特殊文字を用いてSQL文を組み立てているから。"
+        }
+      ],
+      "order_matters": true,
+      "all_required": false,
+      "source_answer_pdf_page": 1,
+      "note": "",
+      "set_id": "A",
+      "question_no": 2,
+      "subquestion_no": 2,
+      "topic": "よくある質問の検索処理における脆弱性の検出",
+      "prompt": "本文中の下線③について、SQLインジェクション脆弱性があると判定される理由を30字以内で答えよ。",
+      "response_format": "記述式",
+      "ui_widget": "textarea",
+      "max_chars": 30,
+      "exact_chars": null,
+      "answer_field_count": 1,
+      "item_char_limits": [],
+      "blank_ids": [],
+      "option_set_id": null
+    },
+    {
+      "id": "A-Q2-3",
+      "display_answer": "c：prepareStatement(sql) / d：ps",
+      "answer_values": [
+        {
+          "label": "c",
+          "value": "prepareStatement(sql)"
+        },
+        {
+          "label": "d",
+          "value": "ps"
+        }
+      ],
+      "order_matters": true,
+      "all_required": false,
+      "source_answer_pdf_page": 1,
+      "note": "",
+      "set_id": "A",
+      "question_no": 2,
+      "subquestion_no": 3,
+      "topic": "よくある質問の検索処理における脆弱性の検出",
+      "prompt": "図2中の［c］、［d］に入れる適切なコードを答えよ。",
+      "response_format": "図表穴埋め記述",
+      "ui_widget": "multi_text",
+      "max_chars": null,
+      "exact_chars": null,
+      "answer_field_count": 2,
+      "item_char_limits": [],
+      "blank_ids": [
+        "c",
+        "d"
+      ],
+      "option_set_id": null
+    },
+    {
+      "id": "A-Q3-1",
+      "display_answer": "登録更新処理を実行する直前のレスポンスの画面にCSRFトークンを格納し、リクエストで返送されたCSRFトークンを検証する。",
+      "answer_values": [
+        {
+          "label": "回答",
+          "value": "登録更新処理を実行する直前のレスポンスの画面にCSRFトークンを格納し、リクエストで返送されたCSRFトークンを検証する。"
+        }
+      ],
+      "order_matters": true,
+      "all_required": false,
+      "source_answer_pdf_page": 1,
+      "note": "",
+      "set_id": "A",
+      "question_no": 3,
+      "subquestion_no": 1,
+      "topic": "サービスとのAPI連携機能のテストと脆弱性の検出",
+      "prompt": "本文中の下線④について、適切な実装において、Webアプリではどのような手順の処理を行うか。『リクエスト』と『レスポンス』という字句を用いて70字以内で具体的に答えよ。",
+      "response_format": "記述式",
+      "ui_widget": "textarea",
+      "max_chars": 70,
+      "exact_chars": null,
+      "answer_field_count": 1,
+      "item_char_limits": [],
+      "blank_ids": [],
+      "option_set_id": null
+    },
+    {
+      "id": "A-Q3-2",
+      "display_answer": "CSRF攻撃を受けてもcookieを送信することがないから。",
+      "answer_values": [
+        {
+          "label": "回答",
+          "value": "CSRF攻撃を受けてもcookieを送信することがないから。"
+        }
+      ],
+      "order_matters": true,
+      "all_required": false,
+      "source_answer_pdf_page": 1,
+      "note": "",
+      "set_id": "A",
+      "question_no": 3,
+      "subquestion_no": 2,
+      "topic": "サービスとのAPI連携機能のテストと脆弱性の検出",
+      "prompt": "本文中の下線⑤について、API連携機能において有効になる理由を35字以内で答えよ。",
+      "response_format": "記述式",
+      "ui_widget": "textarea",
+      "max_chars": 35,
+      "exact_chars": null,
+      "answer_field_count": 1,
+      "item_char_limits": [],
+      "blank_ids": [],
+      "option_set_id": null
+    },
+    {
+      "id": "A-Q3-3",
+      "display_answer": "サーバサイドリクエストフォージェリ",
+      "answer_values": [
+        {
+          "label": "e",
+          "value": "サーバサイドリクエストフォージェリ"
+        }
+      ],
+      "order_matters": true,
+      "all_required": false,
+      "source_answer_pdf_page": 1,
+      "note": "",
+      "set_id": "A",
+      "question_no": 3,
+      "subquestion_no": 3,
+      "topic": "サービスとのAPI連携機能のテストと脆弱性の検出",
+      "prompt": "本文中の［e］に入れる脆弱性の名称を、カタカナ20字以内で答えよ。",
+      "response_format": "穴埋め記述",
+      "ui_widget": "text",
+      "max_chars": 20,
+      "exact_chars": null,
+      "answer_field_count": 1,
+      "item_char_limits": [],
+      "blank_ids": [
+        "e"
+      ],
+      "option_set_id": null
+    },
+    {
+      "id": "A-Q3-4",
+      "display_answer": "イ",
+      "answer_values": [
+        {
+          "label": "f",
+          "value": "イ"
+        }
+      ],
+      "order_matters": true,
+      "all_required": false,
+      "source_answer_pdf_page": 1,
+      "note": "",
+      "set_id": "A",
+      "question_no": 3,
+      "subquestion_no": 4,
+      "topic": "サービスとのAPI連携機能のテストと脆弱性の検出",
+      "prompt": "図4中の［f］に入れるヘッダーの名称を解答群の中から選び、記号で答えよ。",
+      "response_format": "図表選択式（単一選択）",
+      "ui_widget": "radio",
+      "max_chars": null,
+      "exact_chars": null,
+      "answer_field_count": 1,
+      "item_char_limits": [],
+      "blank_ids": [
+        "f"
+      ],
+      "option_set_id": "OPT-A-Q3-4"
+    },
+    {
+      "id": "A-Q3-5",
+      "display_answer": "① 宛先が攻撃者のURLに書き換えられたもの / ② ヘッダーにAPIキーが含まれているもの",
+      "answer_values": [
+        {
+          "label": "①",
+          "value": "宛先が攻撃者のURLに書き換えられたもの"
+        },
+        {
+          "label": "②",
+          "value": "ヘッダーにAPIキーが含まれているもの"
+        }
+      ],
+      "order_matters": true,
+      "all_required": false,
+      "source_answer_pdf_page": 1,
+      "note": "",
+      "set_id": "A",
+      "question_no": 3,
+      "subquestion_no": 5,
+      "topic": "サービスとのAPI連携機能のテストと脆弱性の検出",
+      "prompt": "本文中の下線⑥について、（い）の影響につながるHTTPリクエストの特徴を二つ挙げ、それぞれ25字以内で答えよ。",
+      "response_format": "記述式（複数回答）",
+      "ui_widget": "multi_text",
+      "max_chars": null,
+      "exact_chars": null,
+      "answer_field_count": 2,
+      "item_char_limits": [
+        25,
+        25
+      ],
+      "blank_ids": [],
+      "option_set_id": null
+    },
+    {
+      "id": "A-Q4-1",
+      "display_answer": "Included in 4",
+      "answer_values": [
+        {
+          "label": "g",
+          "value": "Included in 4"
+        }
+      ],
+      "order_matters": true,
+      "all_required": false,
+      "source_answer_pdf_page": 1,
+      "note": "",
+      "set_id": "A",
+      "question_no": 4,
+      "subquestion_no": 1,
+      "topic": "ソフトウェア管理の見直し",
+      "prompt": "表2中の［g］に入れる適切な字句を答えよ。",
+      "response_format": "図表穴埋め記述",
+      "ui_widget": "text",
+      "max_chars": null,
+      "exact_chars": null,
+      "answer_field_count": 1,
+      "item_char_limits": [],
+      "blank_ids": [
+        "g"
+      ],
+      "option_set_id": null
+    },
+    {
+      "id": "A-Q4-2",
+      "display_answer": "CVSS",
+      "answer_values": [
+        {
+          "label": "h",
+          "value": "CVSS"
+        }
+      ],
+      "order_matters": true,
+      "all_required": false,
+      "source_answer_pdf_page": 1,
+      "note": "",
+      "set_id": "A",
+      "question_no": 4,
+      "subquestion_no": 2,
+      "topic": "ソフトウェア管理の見直し",
+      "prompt": "本文中の［h］に入れる適切な字句を、英字4字で答えよ。",
+      "response_format": "穴埋め記述",
+      "ui_widget": "text",
+      "max_chars": null,
+      "exact_chars": 4,
+      "answer_field_count": 1,
+      "item_char_limits": [],
+      "blank_ids": [
+        "h"
+      ],
+      "option_set_id": null
+    },
+    {
+      "id": "A-Q4-3",
+      "display_answer": "攻撃による影響範囲と深刻度をより正確に判断する。",
+      "answer_values": [
+        {
+          "label": "回答",
+          "value": "攻撃による影響範囲と深刻度をより正確に判断する。"
+        }
+      ],
+      "order_matters": true,
+      "all_required": false,
+      "source_answer_pdf_page": 1,
+      "note": "",
+      "set_id": "A",
+      "question_no": 4,
+      "subquestion_no": 3,
+      "topic": "ソフトウェア管理の見直し",
+      "prompt": "本文中の下線⑦について、Gサイトにおいて、攻撃対象のOSSを使用していることが判明した場合に、どのように初動対応をより正確に行うことができるか。30字以内で答えよ。",
+      "response_format": "記述式",
+      "ui_widget": "textarea",
+      "max_chars": 30,
+      "exact_chars": null,
+      "answer_field_count": 1,
+      "item_char_limits": [],
+      "blank_ids": [],
+      "option_set_id": null
+    },
+    {
+      "id": "B-Q1-1",
+      "display_answer": "ア",
+      "answer_values": [
+        {
+          "label": "a",
+          "value": "ア"
+        }
+      ],
+      "order_matters": true,
+      "all_required": false,
+      "source_answer_pdf_page": 1,
+      "note": "",
+      "set_id": "B",
+      "question_no": 1,
+      "subquestion_no": 1,
+      "topic": "データアクセスの見直し",
+      "prompt": "図1及び本文中の［a］に入れる適切な字句を解答群の中から選び、記号で答えよ。",
+      "response_format": "図表選択式（単一選択）",
+      "ui_widget": "radio",
+      "max_chars": null,
+      "exact_chars": null,
+      "answer_field_count": 1,
+      "item_char_limits": [],
+      "blank_ids": [
+        "a"
+      ],
+      "option_set_id": "OPT-B-Q1-1"
+    },
+    {
+      "id": "B-Q1-2",
+      "display_answer": "OSコマンドインジェクション",
+      "answer_values": [
+        {
+          "label": "b",
+          "value": "OSコマンドインジェクション"
+        }
+      ],
+      "order_matters": true,
+      "all_required": false,
+      "source_answer_pdf_page": 1,
+      "note": "",
+      "set_id": "B",
+      "question_no": 1,
+      "subquestion_no": 2,
+      "topic": "データアクセスの見直し",
+      "prompt": "図1及び本文中の［b］に入れる適切な字句を答えよ。",
+      "response_format": "図表穴埋め記述",
+      "ui_widget": "text",
+      "max_chars": null,
+      "exact_chars": null,
+      "answer_field_count": 1,
+      "item_char_limits": [],
+      "blank_ids": [
+        "b"
+      ],
+      "option_set_id": null
+    },
+    {
+      "id": "B-Q1-3",
+      "display_answer": "入力パラメータに「../」などが使われると意図しないパスが形成されるから。",
+      "answer_values": [
+        {
+          "label": "回答",
+          "value": "入力パラメータに「../」などが使われると意図しないパスが形成されるから。"
+        }
+      ],
+      "order_matters": true,
+      "all_required": false,
+      "source_answer_pdf_page": 1,
+      "note": "",
+      "set_id": "B",
+      "question_no": 1,
+      "subquestion_no": 3,
+      "topic": "データアクセスの見直し",
+      "prompt": "本文中の下線①について、固定のディレクトリを指定しても、さらにファイル名を取り出す処理が必要となる理由を、45字以内で具体的に答えよ。",
+      "response_format": "記述式",
+      "ui_widget": "textarea",
+      "max_chars": 45,
+      "exact_chars": null,
+      "answer_field_count": 1,
+      "item_char_limits": [],
+      "blank_ids": [],
+      "option_set_id": null
+    },
+    {
+      "id": "B-Q2-1",
+      "display_answer": "認証サービスには秘密鍵、ストレージサービスには公開鍵を登録する。",
+      "answer_values": [
+        {
+          "label": "回答",
+          "value": "認証サービスには秘密鍵、ストレージサービスには公開鍵を登録する。"
+        }
+      ],
+      "order_matters": true,
+      "all_required": false,
+      "source_answer_pdf_page": 1,
+      "note": "",
+      "set_id": "B",
+      "question_no": 2,
+      "subquestion_no": 1,
+      "topic": "署名付きcookieによるアクセス制御",
+      "prompt": "本文中の下線②について、生成された鍵ペアは、それぞれどこに登録されるか。40字以内で具体的に答えよ。",
+      "response_format": "記述式",
+      "ui_widget": "textarea",
+      "max_chars": 40,
+      "exact_chars": null,
+      "answer_field_count": 1,
+      "item_char_limits": [],
+      "blank_ids": [],
+      "option_set_id": null
+    },
+    {
+      "id": "B-Q2-2",
+      "display_answer": "有効期限の設定によって後日の再使用は拒否できるから。",
+      "answer_values": [
+        {
+          "label": "回答",
+          "value": "有効期限の設定によって後日の再使用は拒否できるから。"
+        }
+      ],
+      "order_matters": true,
+      "all_required": false,
+      "source_answer_pdf_page": 1,
+      "note": "",
+      "set_id": "B",
+      "question_no": 2,
+      "subquestion_no": 2,
+      "topic": "署名付きcookieによるアクセス制御",
+      "prompt": "本文中の下線③について、K主任が困難だと説明した理由は何か。考えられる理由を、署名付きcookieの仕様を踏まえて30字以内で答えよ。",
+      "response_format": "記述式",
+      "ui_widget": "textarea",
+      "max_chars": 30,
+      "exact_chars": null,
+      "answer_field_count": 1,
+      "item_char_limits": [],
+      "blank_ids": [],
+      "option_set_id": null
+    },
+    {
+      "id": "B-Q2-3",
+      "display_answer": "b-sha.m-sha.netを設定する",
+      "answer_values": [
+        {
+          "label": "回答",
+          "value": "b-sha.m-sha.netを設定する"
+        }
+      ],
+      "order_matters": true,
+      "all_required": false,
+      "source_answer_pdf_page": 1,
+      "note": "",
+      "set_id": "B",
+      "question_no": 2,
+      "subquestion_no": 3,
+      "topic": "署名付きcookieによるアクセス制御",
+      "prompt": "本文中の下線④について、どのような値に設定する必要があるか。25字以内で答えよ。",
+      "response_format": "記述式",
+      "ui_widget": "textarea",
+      "max_chars": 25,
+      "exact_chars": null,
+      "answer_field_count": 1,
+      "item_char_limits": [],
+      "blank_ids": [],
+      "option_set_id": null
+    },
+    {
+      "id": "B-Q2-4",
+      "display_answer": "c：ア / d：ウ",
+      "answer_values": [
+        {
+          "label": "c",
+          "value": "ア"
+        },
+        {
+          "label": "d",
+          "value": "ウ"
+        }
+      ],
+      "order_matters": false,
+      "all_required": false,
+      "source_answer_pdf_page": 1,
+      "note": "c、dは順不同",
+      "set_id": "B",
+      "question_no": 2,
+      "subquestion_no": 4,
+      "topic": "署名付きcookieによるアクセス制御",
+      "prompt": "本文中の［c］、［d］に入れる適切な属性名を解答群の中から選び、記号で答えよ。",
+      "response_format": "選択式（単一選択×2）",
+      "ui_widget": "multi_radio",
+      "max_chars": null,
+      "exact_chars": null,
+      "answer_field_count": 2,
+      "item_char_limits": [],
+      "blank_ids": [
+        "c",
+        "d"
+      ],
+      "option_set_id": "OPT-B-Q2-4"
+    },
+    {
+      "id": "B-Q3-1",
+      "display_answer": "B社が貸与するPC",
+      "answer_values": [
+        {
+          "label": "e",
+          "value": "B社が貸与するPC"
+        }
+      ],
+      "order_matters": true,
+      "all_required": false,
+      "source_answer_pdf_page": 1,
+      "note": "",
+      "set_id": "B",
+      "question_no": 3,
+      "subquestion_no": 1,
+      "topic": "利用者認証方式の検討",
+      "prompt": "本文中の［e］に入れる適切な字句を具体的に答えよ。",
+      "response_format": "穴埋め記述",
+      "ui_widget": "text",
+      "max_chars": null,
+      "exact_chars": null,
+      "answer_field_count": 1,
+      "item_char_limits": [],
+      "blank_ids": [
+        "e"
+      ],
+      "option_set_id": null
+    },
+    {
+      "id": "B-Q4-1",
+      "display_answer": "f：メッセージ認証コード（又は、MAC） / g：暗号鍵 / h：高速 / i：アクセス不可能なデータ / j：正当化",
+      "answer_values": [
+        {
+          "label": "f",
+          "value": "メッセージ認証コード",
+          "accepted_values": [
+            "メッセージ認証コード",
+            "MAC"
+          ]
+        },
+        {
+          "label": "g",
+          "value": "暗号鍵"
+        },
+        {
+          "label": "h",
+          "value": "高速"
+        },
+        {
+          "label": "i",
+          "value": "アクセス不可能なデータ"
+        },
+        {
+          "label": "j",
+          "value": "正当化"
+        }
+      ],
+      "order_matters": true,
+      "all_required": false,
+      "source_answer_pdf_page": 1,
+      "note": "",
+      "set_id": "B",
+      "question_no": 4,
+      "subquestion_no": 1,
+      "topic": "データの保護",
+      "prompt": "本文中の［f］〜［j］に入れる適切な字句を答えよ。",
+      "response_format": "穴埋め記述",
+      "ui_widget": "multi_text",
+      "max_chars": null,
+      "exact_chars": null,
+      "answer_field_count": 5,
+      "item_char_limits": [],
+      "blank_ids": [
+        "f",
+        "g",
+        "h",
+        "i",
+        "j"
+      ],
+      "option_set_id": null
+    },
+    {
+      "id": "B-Q4-2",
+      "display_answer": "sudoコマンドを用いて業務に必要最小の権限を付与する方法",
+      "answer_values": [
+        {
+          "label": "回答",
+          "value": "sudoコマンドを用いて業務に必要最小の権限を付与する方法"
+        }
+      ],
+      "order_matters": true,
+      "all_required": false,
+      "source_answer_pdf_page": 2,
+      "note": "",
+      "set_id": "B",
+      "question_no": 4,
+      "subquestion_no": 2,
+      "topic": "データの保護",
+      "prompt": "本文中の下線⑤について、どのような方法が考えられるか。35字以内で答えよ。",
+      "response_format": "記述式",
+      "ui_widget": "textarea",
+      "max_chars": 35,
+      "exact_chars": null,
+      "answer_field_count": 1,
+      "item_char_limits": [],
+      "blank_ids": [],
+      "option_set_id": null
+    },
+    {
+      "id": "B-Q4-3",
+      "display_answer": "不正競争防止",
+      "answer_values": [
+        {
+          "label": "k",
+          "value": "不正競争防止"
+        }
+      ],
+      "order_matters": true,
+      "all_required": false,
+      "source_answer_pdf_page": 2,
+      "note": "",
+      "set_id": "B",
+      "question_no": 4,
+      "subquestion_no": 3,
+      "topic": "データの保護",
+      "prompt": "本文中の［k］に入れる適切な字句を答えよ。",
+      "response_format": "穴埋め記述",
+      "ui_widget": "text",
+      "max_chars": null,
+      "exact_chars": null,
+      "answer_field_count": 1,
+      "item_char_limits": [],
+      "blank_ids": [
+        "k"
+      ],
+      "option_set_id": null
+    },
+    {
+      "id": "C-Q1-1",
+      "display_answer": "インターネット上に分散配置された複数のキャッシュサーバが利用者からの要求を受け付けるから。",
+      "answer_values": [
+        {
+          "label": "回答",
+          "value": "インターネット上に分散配置された複数のキャッシュサーバが利用者からの要求を受け付けるから。"
+        }
+      ],
+      "order_matters": true,
+      "all_required": false,
+      "source_answer_pdf_page": 2,
+      "note": "",
+      "set_id": "C",
+      "question_no": 1,
+      "subquestion_no": 1,
+      "topic": "CDNの導入検討",
+      "prompt": "本文中の下線①について、DDoS攻撃に対する耐性が向上する理由を、45字以内で具体的に答えよ。",
+      "response_format": "記述式",
+      "ui_widget": "textarea",
+      "max_chars": 45,
+      "exact_chars": null,
+      "answer_field_count": 1,
+      "item_char_limits": [],
+      "blank_ids": [],
+      "option_set_id": null
+    },
+    {
+      "id": "C-Q1-2",
+      "display_answer": "オ",
+      "answer_values": [
+        {
+          "label": "a",
+          "value": "オ"
+        }
+      ],
+      "order_matters": true,
+      "all_required": false,
+      "source_answer_pdf_page": 2,
+      "note": "",
+      "set_id": "C",
+      "question_no": 1,
+      "subquestion_no": 2,
+      "topic": "CDNの導入検討",
+      "prompt": "本文中の［a］に入れる適切な字句を解答群の中から選び、記号で答えよ。",
+      "response_format": "選択式（単一選択）",
+      "ui_widget": "radio",
+      "max_chars": null,
+      "exact_chars": null,
+      "answer_field_count": 1,
+      "item_char_limits": [],
+      "blank_ids": [
+        "a"
+      ],
+      "option_set_id": "OPT-C-Q1-2"
+    },
+    {
+      "id": "C-Q1-3",
+      "display_answer": "A社のPCは、攻撃者サーバではなく、CDN-Yのキャッシュサーバと通信しているから。",
+      "answer_values": [
+        {
+          "label": "回答",
+          "value": "A社のPCは、攻撃者サーバではなく、CDN-Yのキャッシュサーバと通信しているから。"
+        }
+      ],
+      "order_matters": true,
+      "all_required": false,
+      "source_answer_pdf_page": 2,
+      "note": "",
+      "set_id": "C",
+      "question_no": 1,
+      "subquestion_no": 3,
+      "topic": "CDNの導入検討",
+      "prompt": "本文中の下線②について、FWやプロキシサーバで遮断できない理由を、45字以内で答えよ。",
+      "response_format": "記述式",
+      "ui_widget": "textarea",
+      "max_chars": 45,
+      "exact_chars": null,
+      "answer_field_count": 1,
+      "item_char_limits": [],
+      "blank_ids": [],
+      "option_set_id": null
+    },
+    {
+      "id": "C-Q1-4",
+      "display_answer": "B-CDN-Y",
+      "answer_values": [
+        {
+          "label": "b",
+          "value": "B-CDN-Y"
+        }
+      ],
+      "order_matters": true,
+      "all_required": false,
+      "source_answer_pdf_page": 2,
+      "note": "",
+      "set_id": "C",
+      "question_no": 1,
+      "subquestion_no": 4,
+      "topic": "CDNの導入検討",
+      "prompt": "本文中の［b］に入れる適切な字句を答えよ。",
+      "response_format": "穴埋め記述",
+      "ui_widget": "text",
+      "max_chars": null,
+      "exact_chars": null,
+      "answer_field_count": 1,
+      "item_char_limits": [],
+      "blank_ids": [
+        "b"
+      ],
+      "option_set_id": null
+    },
+    {
+      "id": "C-Q1-5",
+      "display_answer": "TLSのSNIとHTTPリクエストのHostヘッダーを比較する。",
+      "answer_values": [
+        {
+          "label": "回答",
+          "value": "TLSのSNIとHTTPリクエストのHostヘッダーを比較する。"
+        }
+      ],
+      "order_matters": true,
+      "all_required": false,
+      "source_answer_pdf_page": 2,
+      "note": "",
+      "set_id": "C",
+      "question_no": 1,
+      "subquestion_no": 5,
+      "topic": "CDNの導入検討",
+      "prompt": "本文中の下線③について、TLSの何と、HTTPの何を比較すれば対策になるか。40字以内で答えよ。",
+      "response_format": "記述式",
+      "ui_widget": "textarea",
+      "max_chars": 40,
+      "exact_chars": null,
+      "answer_field_count": 1,
+      "item_char_limits": [],
+      "blank_ids": [],
+      "option_set_id": null
+    },
+    {
+      "id": "C-Q2-1",
+      "display_answer": "① デジタル署名の発行元がIDaaSであること / ② SAMLアサーションが改ざんされていないこと",
+      "answer_values": [
+        {
+          "label": "①",
+          "value": "デジタル署名の発行元がIDaaSであること"
+        },
+        {
+          "label": "②",
+          "value": "SAMLアサーションが改ざんされていないこと"
+        }
+      ],
+      "order_matters": true,
+      "all_required": false,
+      "source_answer_pdf_page": 2,
+      "note": "",
+      "set_id": "C",
+      "question_no": 2,
+      "subquestion_no": 1,
+      "topic": "SaaSにおけるSSOの実現",
+      "prompt": "表1中の下線④について、デジタル署名を検証することによって、確認できる事項を二つ挙げ、それぞれ25字以内で答えよ。",
+      "response_format": "記述式（複数回答）",
+      "ui_widget": "multi_text",
+      "max_chars": null,
+      "exact_chars": null,
+      "answer_field_count": 2,
+      "item_char_limits": [
+        25,
+        25
+      ],
+      "blank_ids": [],
+      "option_set_id": null
+    },
+    {
+      "id": "C-Q2-2",
+      "display_answer": "c：IdP / d：URL / e：公開鍵証明書",
+      "answer_values": [
+        {
+          "label": "c",
+          "value": "IdP"
+        },
+        {
+          "label": "d",
+          "value": "URL"
+        },
+        {
+          "label": "e",
+          "value": "公開鍵証明書"
+        }
+      ],
+      "order_matters": true,
+      "all_required": false,
+      "source_answer_pdf_page": 2,
+      "note": "",
+      "set_id": "C",
+      "question_no": 2,
+      "subquestion_no": 2,
+      "topic": "SaaSにおけるSSOの実現",
+      "prompt": "本文中の［c］〜［e］に入れる適切な字句を答えよ。",
+      "response_format": "穴埋め記述",
+      "ui_widget": "multi_text",
+      "max_chars": null,
+      "exact_chars": null,
+      "answer_field_count": 3,
+      "item_char_limits": [],
+      "blank_ids": [
+        "c",
+        "d",
+        "e"
+      ],
+      "option_set_id": null
+    },
+    {
+      "id": "C-Q3-1",
+      "display_answer": "f：カ / g：ウ",
+      "answer_values": [
+        {
+          "label": "f",
+          "value": "カ"
+        },
+        {
+          "label": "g",
+          "value": "ウ"
+        }
+      ],
+      "order_matters": true,
+      "all_required": false,
+      "source_answer_pdf_page": 2,
+      "note": "",
+      "set_id": "C",
+      "question_no": 3,
+      "subquestion_no": 1,
+      "topic": "サービス間連携の実現",
+      "prompt": "図6中の［f］、［g］に入れる適切な字句を解答群の中から選び、記号で答えよ。",
+      "response_format": "図表選択式（単一選択×2）",
+      "ui_widget": "multi_radio",
+      "max_chars": null,
+      "exact_chars": null,
+      "answer_field_count": 2,
+      "item_char_limits": [],
+      "blank_ids": [
+        "f",
+        "g"
+      ],
+      "option_set_id": "OPT-C-Q3-1"
+    },
+    {
+      "id": "C-Q3-2",
+      "display_answer": "図6中の(2)にstateパラメータを付けて送信し、図6中の(7)で送られてきたものと比較する。",
+      "answer_values": [
+        {
+          "label": "回答",
+          "value": "図6中の(2)にstateパラメータを付けて送信し、図6中の(7)で送られてきたものと比較する。"
+        }
+      ],
+      "order_matters": true,
+      "all_required": false,
+      "source_answer_pdf_page": 2,
+      "note": "",
+      "set_id": "C",
+      "question_no": 3,
+      "subquestion_no": 2,
+      "topic": "サービス間連携の実現",
+      "prompt": "本文中の下線⑤について、Fサービス側で行う処理を、図6中の(1)〜(13)の番号と、『stateパラメータ』という字句を用いて50字以内で答えよ。",
+      "response_format": "図表参照記述式",
+      "ui_widget": "textarea",
+      "max_chars": 50,
+      "exact_chars": null,
+      "answer_field_count": 1,
+      "item_char_limits": [],
+      "blank_ids": [],
+      "option_set_id": null
+    },
+    {
+      "id": "C-Q3-3",
+      "display_answer": "図6中の(3)に検証コードから生成したチャレンジコードを付加して送信し、図6中の(7)に検証コードを付加して送信する。",
+      "answer_values": [
+        {
+          "label": "回答",
+          "value": "図6中の(3)に検証コードから生成したチャレンジコードを付加して送信し、図6中の(7)に検証コードを付加して送信する。"
+        }
+      ],
+      "order_matters": true,
+      "all_required": false,
+      "source_answer_pdf_page": 2,
+      "note": "",
+      "set_id": "C",
+      "question_no": 3,
+      "subquestion_no": 3,
+      "topic": "サービス間連携の実現",
+      "prompt": "本文中の下線⑥について、スマホアプリはどの通信にどのような情報を付加して送ればよいか。図6中の(1)〜(13)の番号と、『チャレンジコード』及び『検証コード』という字句を用いて60字以内で答えよ。ただし、チャレンジコードと検証コードの関係を明確にして答えること。",
+      "response_format": "図表参照記述式",
+      "ui_widget": "textarea",
+      "max_chars": 60,
+      "exact_chars": null,
+      "answer_field_count": 1,
+      "item_char_limits": [],
+      "blank_ids": [],
+      "option_set_id": null
+    },
+    {
+      "id": "D-Q1-1",
+      "display_answer": "a：メール送信者の秘密鍵 / b：メール送信者の公開鍵",
+      "answer_values": [
+        {
+          "label": "a",
+          "value": "メール送信者の秘密鍵"
+        },
+        {
+          "label": "b",
+          "value": "メール送信者の公開鍵"
+        }
+      ],
+      "order_matters": true,
+      "all_required": false,
+      "source_answer_pdf_page": 2,
+      "note": "",
+      "set_id": "D",
+      "question_no": 1,
+      "subquestion_no": 1,
+      "topic": "フィッシングメール対策の検討",
+      "prompt": "本文中の［a］、［b］に入れる適切な字句を、『［メール送信者／メール受信者］の［秘密鍵／公開鍵］』という形式で答えよ。",
+      "response_format": "穴埋め記述",
+      "ui_widget": "multi_text",
+      "max_chars": null,
+      "exact_chars": null,
+      "answer_field_count": 2,
+      "item_char_limits": [],
+      "blank_ids": [
+        "a",
+        "b"
+      ],
+      "option_set_id": null
+    },
+    {
+      "id": "D-Q1-2",
+      "display_answer": "c：メールアドレス / d：サブジェクト代替名",
+      "answer_values": [
+        {
+          "label": "c",
+          "value": "メールアドレス"
+        },
+        {
+          "label": "d",
+          "value": "サブジェクト代替名"
+        }
+      ],
+      "order_matters": true,
+      "all_required": false,
+      "source_answer_pdf_page": 2,
+      "note": "",
+      "set_id": "D",
+      "question_no": 1,
+      "subquestion_no": 2,
+      "topic": "フィッシングメール対策の検討",
+      "prompt": "本文中の［c］、［d］に入れる適切な字句を、それぞれ10字以内で答えよ。",
+      "response_format": "穴埋め記述",
+      "ui_widget": "multi_text",
+      "max_chars": null,
+      "exact_chars": null,
+      "answer_field_count": 2,
+      "item_char_limits": [
+        10,
+        10
+      ],
+      "blank_ids": [
+        "c",
+        "d"
+      ],
+      "option_set_id": null
+    },
+    {
+      "id": "D-Q1-3",
+      "display_answer": "エ",
+      "answer_values": [
+        {
+          "label": "e",
+          "value": "エ"
+        }
+      ],
+      "order_matters": true,
+      "all_required": false,
+      "source_answer_pdf_page": 2,
+      "note": "",
+      "set_id": "D",
+      "question_no": 1,
+      "subquestion_no": 3,
+      "topic": "フィッシングメール対策の検討",
+      "prompt": "本文中の［e］に入れる適切な字句を解答群の中から選び、記号で答えよ。",
+      "response_format": "選択式（単一選択）",
+      "ui_widget": "radio",
+      "max_chars": null,
+      "exact_chars": null,
+      "answer_field_count": 1,
+      "item_char_limits": [],
+      "blank_ids": [
+        "e"
+      ],
+      "option_set_id": "OPT-D-Q1-3"
+    },
+    {
+      "id": "D-Q1-4",
+      "display_answer": "C社のドメインから送信したメールであることをC社が保証するから。",
+      "answer_values": [
+        {
+          "label": "回答",
+          "value": "C社のドメインから送信したメールであることをC社が保証するから。"
+        }
+      ],
+      "order_matters": true,
+      "all_required": false,
+      "source_answer_pdf_page": 2,
+      "note": "",
+      "set_id": "D",
+      "question_no": 1,
+      "subquestion_no": 4,
+      "topic": "フィッシングメール対策の検討",
+      "prompt": "本文中の下線①について、C社から送信されるメールがフィッシングメールと判断されないようにするには、C社はS/MIMEやPGPではなく、送信ドメイン認証に対応するだけでよいといえる理由を、35字以内で答えよ。ただし、誤ってC社の情報がDNSBLやRHSBLなどのブラックリストに掲載されてしまった場合の対応は考慮しないものとする。",
+      "response_format": "記述式",
+      "ui_widget": "textarea",
+      "max_chars": 35,
+      "exact_chars": null,
+      "answer_field_count": 1,
+      "item_char_limits": [],
+      "blank_ids": [],
+      "option_set_id": null
+    },
+    {
+      "id": "D-Q1-5",
+      "display_answer": "送信元メールアドレスを偽っている場合には検出できない。",
+      "answer_values": [
+        {
+          "label": "回答",
+          "value": "送信元メールアドレスを偽っている場合には検出できない。"
+        }
+      ],
+      "order_matters": true,
+      "all_required": false,
+      "source_answer_pdf_page": 2,
+      "note": "",
+      "set_id": "D",
+      "question_no": 1,
+      "subquestion_no": 5,
+      "topic": "フィッシングメール対策の検討",
+      "prompt": "本文中の下線②について、フィッシングメール対策としてのRHSBLの問題点は何か。30字以内で答えよ。",
+      "response_format": "記述式",
+      "ui_widget": "textarea",
+      "max_chars": 30,
+      "exact_chars": null,
+      "answer_field_count": 1,
+      "item_char_limits": [],
+      "blank_ids": [],
+      "option_set_id": null
+    },
+    {
+      "id": "D-Q2-1",
+      "display_answer": "+ip4:a.b.1.20 +ip4:a.b.1.21",
+      "answer_values": [
+        {
+          "label": "f",
+          "value": "+ip4:a.b.1.20 +ip4:a.b.1.21"
+        }
+      ],
+      "order_matters": true,
+      "all_required": false,
+      "source_answer_pdf_page": 2,
+      "note": "",
+      "set_id": "D",
+      "question_no": 2,
+      "subquestion_no": 1,
+      "topic": "送信ドメイン認証の導入検討",
+      "prompt": "図3中の［f］に入れる適切な字句を、機構（メカニズム）を含めて答えよ。",
+      "response_format": "図表穴埋め記述",
+      "ui_widget": "text",
+      "max_chars": null,
+      "exact_chars": null,
+      "answer_field_count": 1,
+      "item_char_limits": [],
+      "blank_ids": [
+        "f"
+      ],
+      "option_set_id": null
+    },
+    {
+      "id": "D-Q2-2",
+      "display_answer": "転送メールサーバが、Envelope-FROMを変えずにメールを転送するから。",
+      "answer_values": [
+        {
+          "label": "回答",
+          "value": "転送メールサーバが、Envelope-FROMを変えずにメールを転送するから。"
+        }
+      ],
+      "order_matters": true,
+      "all_required": false,
+      "source_answer_pdf_page": 2,
+      "note": "",
+      "set_id": "D",
+      "question_no": 2,
+      "subquestion_no": 2,
+      "topic": "送信ドメイン認証の導入検討",
+      "prompt": "本文中の下線③について、SPF認証に失敗するのは、転送メールサーバがどのようにメールを転送しているからか。その理由を45字以内で具体的に答えよ。",
+      "response_format": "記述式",
+      "ui_widget": "textarea",
+      "max_chars": 45,
+      "exact_chars": null,
+      "answer_field_count": 1,
+      "item_char_limits": [],
+      "blank_ids": [],
+      "option_set_id": null
+    },
+    {
+      "id": "D-Q2-3",
+      "display_answer": "メール転送中に変更されるヘッダーが存在するから。",
+      "answer_values": [
+        {
+          "label": "回答",
+          "value": "メール転送中に変更されるヘッダーが存在するから。"
+        }
+      ],
+      "order_matters": true,
+      "all_required": false,
+      "source_answer_pdf_page": 2,
+      "note": "",
+      "set_id": "D",
+      "question_no": 2,
+      "subquestion_no": 3,
+      "topic": "送信ドメイン認証の導入検討",
+      "prompt": "本文中の下線④について、全てのメールヘッダーを署名対象としない理由を、30字以内で答えよ。",
+      "response_format": "記述式",
+      "ui_widget": "textarea",
+      "max_chars": 30,
+      "exact_chars": null,
+      "answer_field_count": 1,
+      "item_char_limits": [],
+      "blank_ids": [],
+      "option_set_id": null
+    },
+    {
+      "id": "D-Q2-4",
+      "display_answer": "Fromヘッダーにあるメールアドレスのドメインがチェックされないから。",
+      "answer_values": [
+        {
+          "label": "回答",
+          "value": "Fromヘッダーにあるメールアドレスのドメインがチェックされないから。"
+        }
+      ],
+      "order_matters": true,
+      "all_required": false,
+      "source_answer_pdf_page": 2,
+      "note": "",
+      "set_id": "D",
+      "question_no": 2,
+      "subquestion_no": 4,
+      "topic": "送信ドメイン認証の導入検討",
+      "prompt": "本文中の下線⑤について、E部長が不十分ではないかと指摘した理由を、40字以内で答えよ。",
+      "response_format": "記述式",
+      "ui_widget": "textarea",
+      "max_chars": 40,
+      "exact_chars": null,
+      "answer_field_count": 1,
+      "item_char_limits": [],
+      "blank_ids": [],
+      "option_set_id": null
+    },
+    {
+      "id": "D-Q2-5",
+      "display_answer": "SPFかDKIMのいずれか一方の認証に成功し、そのドメイン名がDMARCの認証ドメイン名に一致する場合",
+      "answer_values": [
+        {
+          "label": "回答",
+          "value": "SPFかDKIMのいずれか一方の認証に成功し、そのドメイン名がDMARCの認証ドメイン名に一致する場合"
+        }
+      ],
+      "order_matters": true,
+      "all_required": false,
+      "source_answer_pdf_page": 2,
+      "note": "",
+      "set_id": "D",
+      "question_no": 2,
+      "subquestion_no": 5,
+      "topic": "送信ドメイン認証の導入検討",
+      "prompt": "本文中の下線⑥について、DMARC認証に成功するのはどのような場合か。60字以内で具体的に答えよ。ただし、メールの送信側は、SPFレコード、DKIMレコード、DMARCレコードを正しく登録しているものとする。",
+      "response_format": "記述式",
+      "ui_widget": "textarea",
+      "max_chars": 60,
+      "exact_chars": null,
+      "answer_field_count": 1,
+      "item_char_limits": [],
+      "blank_ids": [],
+      "option_set_id": null
+    },
+    {
+      "id": "D-Q2-6",
+      "display_answer": "g：PC / h：PC / i：なし / j：外部メールサーバ / k：外部メールサーバ / l：外部DNSサーバ / m：外部DNSサーバ / n：外部メールサーバ",
+      "answer_values": [
+        {
+          "label": "g",
+          "value": "PC"
+        },
+        {
+          "label": "h",
+          "value": "PC"
+        },
+        {
+          "label": "i",
+          "value": "なし"
+        },
+        {
+          "label": "j",
+          "value": "外部メールサーバ"
+        },
+        {
+          "label": "k",
+          "value": "外部メールサーバ"
+        },
+        {
+          "label": "l",
+          "value": "外部DNSサーバ"
+        },
+        {
+          "label": "m",
+          "value": "外部DNSサーバ"
+        },
+        {
+          "label": "n",
+          "value": "外部メールサーバ"
+        }
+      ],
+      "order_matters": true,
+      "all_required": false,
+      "source_answer_pdf_page": 2,
+      "note": "",
+      "set_id": "D",
+      "question_no": 2,
+      "subquestion_no": 6,
+      "topic": "送信ドメイン認証の導入検討",
+      "prompt": "表5中の［g］〜［n］に入れる適切な字句を、図1中の用語を用いて答えよ。なお、該当するものがない場合には『なし』と答えよ。",
+      "response_format": "図表穴埋め記述",
+      "ui_widget": "multi_text",
+      "max_chars": null,
+      "exact_chars": null,
+      "answer_field_count": 8,
+      "item_char_limits": [],
+      "blank_ids": [
+        "g",
+        "h",
+        "i",
+        "j",
+        "k",
+        "l",
+        "m",
+        "n"
+      ],
+      "option_set_id": null
+    }
+  ],
+  "validation": [
+    {
+      "id": "A-Q1-1",
+      "field_count_ok": true,
+      "length_checks": [
+        {
+          "label": "回答",
+          "length": 32,
+          "limit": 40,
+          "ok": true
+        }
+      ]
+    },
+    {
+      "id": "A-Q1-2",
+      "field_count_ok": true,
+      "length_checks": []
+    },
+    {
+      "id": "A-Q2-1",
+      "field_count_ok": true,
+      "length_checks": []
+    },
+    {
+      "id": "A-Q2-2",
+      "field_count_ok": true,
+      "length_checks": [
+        {
+          "label": "回答",
+          "length": 30,
+          "limit": 30,
+          "ok": true
+        }
+      ]
+    },
+    {
+      "id": "A-Q2-3",
+      "field_count_ok": true,
+      "length_checks": []
+    },
+    {
+      "id": "A-Q3-1",
+      "field_count_ok": true,
+      "length_checks": [
+        {
+          "label": "回答",
+          "length": 61,
+          "limit": 70,
+          "ok": true
+        }
+      ]
+    },
+    {
+      "id": "A-Q3-2",
+      "field_count_ok": true,
+      "length_checks": [
+        {
+          "label": "回答",
+          "length": 30,
+          "limit": 35,
+          "ok": true
+        }
+      ]
+    },
+    {
+      "id": "A-Q3-3",
+      "field_count_ok": true,
+      "length_checks": [
+        {
+          "label": "e",
+          "length": 17,
+          "limit": 20,
+          "ok": true
+        }
+      ]
+    },
+    {
+      "id": "A-Q3-4",
+      "field_count_ok": true,
+      "length_checks": []
+    },
+    {
+      "id": "A-Q3-5",
+      "field_count_ok": true,
+      "length_checks": [
+        {
+          "label": "①",
+          "length": 20,
+          "limit": 25,
+          "ok": true
+        },
+        {
+          "label": "②",
+          "length": 19,
+          "limit": 25,
+          "ok": true
+        }
+      ]
+    },
+    {
+      "id": "A-Q4-1",
+      "field_count_ok": true,
+      "length_checks": []
+    },
+    {
+      "id": "A-Q4-2",
+      "field_count_ok": true,
+      "length_checks": []
+    },
+    {
+      "id": "A-Q4-3",
+      "field_count_ok": true,
+      "length_checks": [
+        {
+          "label": "回答",
+          "length": 24,
+          "limit": 30,
+          "ok": true
+        }
+      ]
+    },
+    {
+      "id": "B-Q1-1",
+      "field_count_ok": true,
+      "length_checks": []
+    },
+    {
+      "id": "B-Q1-2",
+      "field_count_ok": true,
+      "length_checks": []
+    },
+    {
+      "id": "B-Q1-3",
+      "field_count_ok": true,
+      "length_checks": [
+        {
+          "label": "回答",
+          "length": 37,
+          "limit": 45,
+          "ok": true
+        }
+      ]
+    },
+    {
+      "id": "B-Q2-1",
+      "field_count_ok": true,
+      "length_checks": [
+        {
+          "label": "回答",
+          "length": 32,
+          "limit": 40,
+          "ok": true
+        }
+      ]
+    },
+    {
+      "id": "B-Q2-2",
+      "field_count_ok": true,
+      "length_checks": [
+        {
+          "label": "回答",
+          "length": 26,
+          "limit": 30,
+          "ok": true
+        }
+      ]
+    },
+    {
+      "id": "B-Q2-3",
+      "field_count_ok": true,
+      "length_checks": [
+        {
+          "label": "回答",
+          "length": 20,
+          "limit": 25,
+          "ok": true
+        }
+      ]
+    },
+    {
+      "id": "B-Q2-4",
+      "field_count_ok": true,
+      "length_checks": []
+    },
+    {
+      "id": "B-Q3-1",
+      "field_count_ok": true,
+      "length_checks": []
+    },
+    {
+      "id": "B-Q4-1",
+      "field_count_ok": true,
+      "length_checks": []
+    },
+    {
+      "id": "B-Q4-2",
+      "field_count_ok": true,
+      "length_checks": [
+        {
+          "label": "回答",
+          "length": 29,
+          "limit": 35,
+          "ok": true
+        }
+      ]
+    },
+    {
+      "id": "B-Q4-3",
+      "field_count_ok": true,
+      "length_checks": []
+    },
+    {
+      "id": "C-Q1-1",
+      "field_count_ok": true,
+      "length_checks": [
+        {
+          "label": "回答",
+          "length": 45,
+          "limit": 45,
+          "ok": true
+        }
+      ]
+    },
+    {
+      "id": "C-Q1-2",
+      "field_count_ok": true,
+      "length_checks": []
+    },
+    {
+      "id": "C-Q1-3",
+      "field_count_ok": true,
+      "length_checks": [
+        {
+          "label": "回答",
+          "length": 42,
+          "limit": 45,
+          "ok": true
+        }
+      ]
+    },
+    {
+      "id": "C-Q1-4",
+      "field_count_ok": true,
+      "length_checks": []
+    },
+    {
+      "id": "C-Q1-5",
+      "field_count_ok": true,
+      "length_checks": [
+        {
+          "label": "回答",
+          "length": 32,
+          "limit": 40,
+          "ok": true
+        }
+      ]
+    },
+    {
+      "id": "C-Q2-1",
+      "field_count_ok": true,
+      "length_checks": [
+        {
+          "label": "①",
+          "length": 21,
+          "limit": 25,
+          "ok": true
+        },
+        {
+          "label": "②",
+          "length": 22,
+          "limit": 25,
+          "ok": true
+        }
+      ]
+    },
+    {
+      "id": "C-Q2-2",
+      "field_count_ok": true,
+      "length_checks": []
+    },
+    {
+      "id": "C-Q3-1",
+      "field_count_ok": true,
+      "length_checks": []
+    },
+    {
+      "id": "C-Q3-2",
+      "field_count_ok": true,
+      "length_checks": [
+        {
+          "label": "回答",
+          "length": 48,
+          "limit": 50,
+          "ok": true
+        }
+      ]
+    },
+    {
+      "id": "C-Q3-3",
+      "field_count_ok": true,
+      "length_checks": [
+        {
+          "label": "回答",
+          "length": 59,
+          "limit": 60,
+          "ok": true
+        }
+      ]
+    },
+    {
+      "id": "D-Q1-1",
+      "field_count_ok": true,
+      "length_checks": []
+    },
+    {
+      "id": "D-Q1-2",
+      "field_count_ok": true,
+      "length_checks": [
+        {
+          "label": "c",
+          "length": 7,
+          "limit": 10,
+          "ok": true
+        },
+        {
+          "label": "d",
+          "length": 9,
+          "limit": 10,
+          "ok": true
+        }
+      ]
+    },
+    {
+      "id": "D-Q1-3",
+      "field_count_ok": true,
+      "length_checks": []
+    },
+    {
+      "id": "D-Q1-4",
+      "field_count_ok": true,
+      "length_checks": [
+        {
+          "label": "回答",
+          "length": 32,
+          "limit": 35,
+          "ok": true
+        }
+      ]
+    },
+    {
+      "id": "D-Q1-5",
+      "field_count_ok": true,
+      "length_checks": [
+        {
+          "label": "回答",
+          "length": 27,
+          "limit": 30,
+          "ok": true
+        }
+      ]
+    },
+    {
+      "id": "D-Q2-1",
+      "field_count_ok": true,
+      "length_checks": []
+    },
+    {
+      "id": "D-Q2-2",
+      "field_count_ok": true,
+      "length_checks": [
+        {
+          "label": "回答",
+          "length": 39,
+          "limit": 45,
+          "ok": true
+        }
+      ]
+    },
+    {
+      "id": "D-Q2-3",
+      "field_count_ok": true,
+      "length_checks": [
+        {
+          "label": "回答",
+          "length": 24,
+          "limit": 30,
+          "ok": true
+        }
+      ]
+    },
+    {
+      "id": "D-Q2-4",
+      "field_count_ok": true,
+      "length_checks": [
+        {
+          "label": "回答",
+          "length": 35,
+          "limit": 40,
+          "ok": true
+        }
+      ]
+    },
+    {
+      "id": "D-Q2-5",
+      "field_count_ok": true,
+      "length_checks": [
+        {
+          "label": "回答",
+          "length": 51,
+          "limit": 60,
+          "ok": true
+        }
+      ]
+    },
+    {
+      "id": "D-Q2-6",
+      "field_count_ok": true,
+      "length_checks": []
+    }
+  ]
+}

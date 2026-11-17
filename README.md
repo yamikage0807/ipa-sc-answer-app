@@ -8,14 +8,30 @@ Node.js 20以降を用意してから実行します。
 
 ```bash
 npm install
-npm run dev
+npm test
 npm run build
 npm run preview
+```
+
+採点APIは別プロセスです。`.env.example`を`.env`へコピーし、Foundryのモデルデプロイendpoint（`https://<resource>.openai.azure.com`のリソースルート。`/openai/v1/responses`やdeployment pathは付けない）とdeploymentを設定してから起動してください。ローカルはEntra ID認証（`DefaultAzureCredential`）を優先します。開発用APIキーを使う場合は`.env`の`FOUNDRY_API_KEY`を設定してください。APIキーを`VITE_`付きの環境変数に置かないでください。
+
+ターミナル1（フロントエンド）:
+
+```bash
+npm run dev
+```
+
+ターミナル2（採点API）:
+
+```bash
+npm run api:dev
 ```
 
 ## GitHub Pages
 
 `main`ブランチへpushすると`.github/workflows/deploy.yml`がビルドしてGitHub Pagesへ公開します。GitHubリポジトリの **Settings → Pages → Build and deployment** で **GitHub Actions** を選択してください。`vite.config.ts`の相対ベース設定により、ユーザーサイトとプロジェクトサイトのどちらにも配置できます。
+
+GitHub PagesはNode.js APIを実行できないため、採点APIは別途Node対応ホストへ配置してください。GitHub ActionsのRepository Variable `VITE_API_BASE_URL`にAPIのHTTPS origin、API側の`FRONTEND_ORIGINS`にPagesのoriginを設定します。FoundryのAPIキーはPagesのFrontend変数に登録せず、APIホストの環境変数またはManaged Identity/Entra IDで管理してください。
 
 ## 問題データの追加
 
@@ -31,4 +47,4 @@ IPA過去問の問題冊子は回答画面内で表示でき、別タブでも�
 
 ## 保存と出力
 
-答案はブラウザーの`localStorage`、添付画像は`IndexedDB`に保存します。ブラウザーデータを消去すると答案と画像も削除されます。TXT/JSONには画像名と設問IDが含まれますが、画像ファイル本体は含まれないため、採点時には画像も別途添付してください。クラウド同期やアプリ内採点は行いません。
+答案はブラウザーの`localStorage`、添付画像は`IndexedDB`に保存します。記述式の採点時は問題文・模範解答・答案をFoundryへ送信します。ブラウザーデータを消去すると答案と画像も削除されます。TXT/JSONには画像名と設問IDが含まれますが、画像ファイル本体は含まれないため、採点時には画像も別途添付してください。AI採点結果は再採点できますが、アプリには保存せず、答案編集後は再採点が必要です。Human Reviewやクラウド同期は行いません。

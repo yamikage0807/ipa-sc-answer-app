@@ -64,6 +64,22 @@ type PracticeExamData = {
   option_sets: Record<string, { code: string; label: string }[]>
 }
 type Status = 'unanswered' | 'answered' | 'overLimit' | 'lengthMismatch' | 'imagePending' | 'review'
+type GradingResult = {
+  score: number
+  maxScore: number | null
+  isCorrect: boolean
+  summary: string
+  goodPoints: string[]
+  missingPoints: string[]
+  incorrectPoints: string[]
+  feedback: string
+  improvedAnswer: string
+}
+type GradingState =
+  | { status: 'loading' }
+  | { status: 'error'; message: string }
+  | { status: 'done'; result: GradingResult; modelAnswer: string; gradingMode: 'ai' | 'rule' }
+type GradeApiResponse = { result: GradingResult; modelAnswer: string; gradingMode: 'ai' | 'rule'; promptVersion?: string }
 
 const ipaExamCatalog = (examData as Omit<Exam, 'sections'>[]).map((entry): Exam => ({
   ...entry,
@@ -129,6 +145,32 @@ const charCount = (answer: Answer | undefined) => typeof answer?.value === 'stri
 const isEmpty = (answer: Answer | undefined) => !answer || (typeof answer.value === 'string' ? !answer.value.trim() : !answer.value || Object.values(answer.value).every((value) => !value.trim()))
 const formatTime = (date: string) => new Date(date).toLocaleTimeString('ja-JP', { hour: '2-digit', minute: '2-digit' })
 
+function formatAnswerForGrading(question: Question, answer: Answer | undefined) {
+  const value = answer?.value
+  if (typeof value === 'string') return value
+  if (Array.isArray(value)) return JSON.stringify(value)
+  if (!value) return ''
+
+  const normalized = Object.fromEntries(Object.entries(value).map(([field, text]) => [field.replace(/[［］\[\]]/g, ''), text]))
+  return question.type === 'multiRadio'
+    ? JSON.stringify(normalized)
+    : Object.entries(normalized).map(([field, text]) => `${field}: ${text}`).join('\n')
+}
+
+function formatAnswerForDisplay(question: Question, answer: Answer | undefined) {
+  const value = answer?.value
+  if (typeof value === 'string') {
+    const option = question.options?.find((item) => item.value === value)
+    return option ? `${option.value}: ${option.label}` : value
+  }
+  if (Array.isArray(value)) return question.options?.filter((item) => value.includes(item.value)).map((item) => `${item.value}: ${item.label}`).join('、') ?? value.join('、')
+  if (!value) return ''
+  return Object.entries(value).map(([field, text]) => {
+    const option = question.options?.find((item) => item.value === text)
+    return `${field}: ${option ? `${option.value} ${option.label}` : text}`
+  }).join('\n')
+}
+
 function readSession(): Session | null {
   try {
     const saved = localStorage.getItem(SESSION_KEY)
@@ -171,6 +213,7 @@ function App() {
   const [phase, setPhase] = useState<'setup' | 'solve' | 'review'>('setup')
   const [selectedSections, setSelectedSections] = useState<string[]>(() => readSession()?.selectedSections ?? defaultSections(examCatalog[0]))
   const [selectedPdfIndex, setSelectedPdfIndex] = useState(0)
+  const [gradingStates, setGradingStates] = useState<Record<string, GradingState>>({})
   const [saveLabel, setSaveLabel] = useState('端末内に自動保存')
   const [notice, setNotice] = useState('')
   const exam = examCatalog.find((entry) => entry.examId === selectedExamId) ?? examCatalog[0]
@@ -239,6 +282,37 @@ function App() {
 
   function updateAnswer(questionId: string, answer: Answer) {
     setSession((current) => current ? { ...current, answers: { ...current.answers, [questionId]: answer } } : current)
+    setGradingStates((current) => {
+      const next = { ...current }
+      delete next[questionId]
+      return next
+    })
+  }
+
+  async function requestGrade(question: Question) {
+    const answer = session?.answers[question.id]
+    if (isEmpty(answer)) return
+    setGradingStates((current) => ({ ...current, [question.id]: { status: 'loading' } }))
+    try {
+      const apiBase = (import.meta.env.VITE_API_BASE_URL ?? '').replace(/\/+$/, '')
+      const response = await fetch(`${apiBase}/api/answers/grade`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ questionId: question.id, answer: formatAnswerForGrading(question, answer) }),
+      })
+      let payload: GradeApiResponse | { error?: string }
+      try {
+        payload = await response.json() as GradeApiResponse | { error?: string }
+      } catch {
+        throw new Error('AI採点を取得できませんでした。もう一度お試しください。')
+      }
+      if (!response.ok) throw new Error('error' in payload ? payload.error ?? '採点に失敗しました。' : '採点に失敗しました。')
+      if (!('result' in payload)) throw new Error('AI採点を取得できませんでした。もう一度お試しください。')
+      setGradingStates((current) => ({ ...current, [question.id]: { status: 'done', ...payload as GradeApiResponse } }))
+    } catch (error) {
+      const message = error instanceof Error && error.message && error.message !== 'Failed to fetch' ? error.message : 'AI採点を取得できませんでした。もう一度お試しください。'
+      setGradingStates((current) => ({ ...current, [question.id]: { status: 'error', message } }))
+    }
   }
 
   function updateQuestionCount(sectionId: string, value: string) {
@@ -364,7 +438,7 @@ function App() {
             <p className="eyebrow">INFORMATION SECURITY SPECIALIST / AFTERNOON</p>
             <h1>考えを、<br /><span>答案のかたちに。</span></h1>
             <p className="lead">大問ごとに設問を並べて、流れを止めずに解答。入力内容はこの端末に保存され、採点に使える形式で書き出せます。</p>
-            <div className="privacy-note"><span className="privacy-mark" />答案は外部へ送信されません</div>
+            <div className="privacy-note"><span className="privacy-mark" />答案は端末に保存。AI採点時にFoundryへ送信します</div>
           </div>
           <section className="setup-panel" aria-labelledby="exam-selection-title">
             <div className="panel-heading">
@@ -450,6 +524,7 @@ function App() {
               {section.items.map((question) => {
                 const answer = session.answers[question.id]
                 const status = getStatus(question, answer)
+                const gradeState = gradingStates[question.id]
                 return <article className="question-card subquestion-card" id={question.id} key={question.id}>
                   <div className="subquestion-heading"><h3>{question.label}</h3><span className={`subquestion-status status-${status}`}>{statusLabel(status)}</span></div>
                   <div className="question-copy"><span className="prompt-label">{exam.examId === practiceExam.examId ? question.label : 'PDFを参照'}</span><p>{question.prompt}</p></div>
@@ -457,6 +532,14 @@ function App() {
                   {question.exactChars && <p className="limit-note">固定文字数 <strong>{question.exactChars}字</strong></p>}
                   {question.figureTableRefs?.length ? <p className="figure-note">関連図表：{question.figureTableRefs.join('・')}（問題冊子を参照）</p> : null}
                   <AnswerControl question={question} answer={answer} onChange={(next) => updateAnswer(question.id, next)} onNotice={setNotice} />
+                  <div className="grade-action-row">
+                    <button className="grade-button" type="button" disabled={isEmpty(answer) || gradingStates[question.id]?.status === 'loading'} onClick={() => void requestGrade(question)}>
+                      {gradeState?.status === 'error' || gradeState?.status === 'done' ? '再採点' : '採点する'}
+                    </button>
+                    {gradeState?.status === 'loading' && <span className="grading-loading" role="status">{['choice', 'checkbox', 'multiRadio'].includes(question.type) ? '答案を判定しています…' : 'AIが答案を採点しています…'}</span>}
+                  </div>
+                  {gradeState?.status === 'error' && <div className="grading-error" role="alert">{gradeState.message}</div>}
+                  {gradeState?.status === 'done' && <GradingResultPanel result={gradeState.result} modelAnswer={gradeState.modelAnswer} gradingMode={gradeState.gradingMode} userAnswer={formatAnswerForDisplay(question, answer)} />}
                 </article>
               })}
             </section>)}
@@ -468,6 +551,24 @@ function App() {
       {notice && <div className="toast" role="status">{notice}</div>}
     </main>
   )
+}
+
+function GradingResultPanel({ result, modelAnswer, gradingMode, userAnswer }: {
+  result: GradingResult
+  modelAnswer: string
+  gradingMode: 'ai' | 'rule'
+  userAnswer: string
+}) {
+  return <section className="grading-result" aria-label="採点結果" aria-live="polite">
+    <header className="grading-result-header"><div><p className="eyebrow">{gradingMode === 'ai' ? 'AI GRADING' : 'ANSWER CHECK'}</p><h4>{result.score} / {result.maxScore ?? 10} 点</h4></div><span className={`grading-verdict ${result.isCorrect ? 'correct' : result.score > 0 ? 'partial' : 'incorrect'}`}>{result.isCorrect ? '正解' : result.score > 0 ? '部分点' : '要見直し'}</span></header>
+    <p className="grading-summary">{result.summary}</p>
+    <div className="answer-comparison"><div><h5>あなたの回答</h5><p>{userAnswer || '未回答'}</p></div><div><h5>模範解答</h5><p>{modelAnswer}</p></div></div>
+    {result.goodPoints.length > 0 && <div className="grading-points good"><h5>良かった点</h5><ul>{result.goodPoints.map((point, index) => <li key={`${index}-${point}`}>{point}</li>)}</ul></div>}
+    {result.missingPoints.length > 0 && <div className="grading-points"><h5>不足している点</h5><ul>{result.missingPoints.map((point, index) => <li key={`${index}-${point}`}>{point}</li>)}</ul></div>}
+    {result.incorrectPoints.length > 0 && <div className="grading-points incorrect"><h5>誤っている点</h5><ul>{result.incorrectPoints.map((point, index) => <li key={`${index}-${point}`}>{point}</li>)}</ul></div>}
+    <div className="grading-feedback"><h5>フィードバック</h5><p>{result.feedback}</p></div>
+    <div className="improved-answer"><h5>改善答案</h5><p>{result.improvedAnswer}</p></div>
+  </section>
 }
 
 function TopBar({ saveLabel, onHome }: { saveLabel: string; onHome?: () => void }) {
